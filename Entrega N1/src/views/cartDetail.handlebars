@@ -1,0 +1,24 @@
+<h1 class="text-center mt-4">Carrito de compras</h1>
+
+<div class="container mt-4">
+  {{#if cart.products.length}}
+    <div class="row">
+      {{#each cart.products}}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <img src="/{{this.product.thumbnails.[0]}}" class="card-img-top" alt="{{this.product.title}}">
+            <div class="card-body">
+              <h5 class="card-title">{{this.product.title}}</h5>
+              <p class="card-text">{{this.product.description}}</p>
+              <p class="card-text"><strong>Precio:</strong> ${{this.product.price}}</p>
+              <p class="card-text"><strong>Cantidad:</strong> {{this.quantity}}</p>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+      <a href="/" class="btn btn-secondary mt-2">Volver a la lista</a>
+    </div>
+  {{else}}
+    <p class="text-center">Tu carrito está vacío.</p>
+  {{/if}}
+</div>

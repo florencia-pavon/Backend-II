@@ -1,0 +1,38 @@
+<h1 class="text-center mt-4">Lista de productos</h1>
+
+{{#if productos.length}}
+  <div class="container mt-4">
+    <div class="row">
+      {{#each productos}}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <img src="{{this.thumbnails.[0]}}" class="card-img-top" alt="{{this.title}}">
+            <div class="card-body">
+              <h5 class="card-title">{{this.title}}</h5>
+              <p class="card-text">${{this.price}}</p>
+              <p class="card-text">{{this.description}}</p>
+              <p class="card-text"><small class="text-muted">Stock: {{this.stock}}</small></p>
+              <a href="/products/{{this._id}}" class="btn btn-primary">Ver detalles</a>
+              <form action="/api/carts" method="POST">
+                <input type="hidden" name="productId" value="{{this._id}}">
+                <button type="submit" class="btn btn-success mt-3">Agregar al carrito</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+
+    <div class="text-center mt-4">
+      {{#if hasPrevPage}}
+        <a href="{{prevLink}}" class="btn btn-outline-primary">Página anterior</a>
+      {{/if}}
+      <span class="mx-3">Página {{page}}</span>
+      {{#if hasNextPage}}
+        <a href="{{nextLink}}" class="btn btn-outline-primary">Página siguiente</a>
+      {{/if}}
+    </div>
+  </div>
+{{else}}
+  <p class="text-center">No hay productos cargados todavía.</p>
+{{/if}}
