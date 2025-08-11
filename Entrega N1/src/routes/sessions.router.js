@@ -2,56 +2,67 @@ import { Router } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 
-import UserModel from '../models/user.model.js';
-import { createHash } from '../utils/bcrypt.utils.js';
-import { passportCall } from '../middlewares/passportCall.js';
-
 const router = Router();
+const { JWT_SECRET = 'changeme', NODE_ENV = 'development' } = process.env;
+const COOKIE_NAME = 'jwtCookie';
 
-router.post('/register', async (req, res) => {
-  const { first_name, last_name, email, age, password } = req.body;
+const signUserToken = (user) =>
+  jwt.sign(
+    {
+      user: {
+        _id: user._id,
+        email: user.email,
+        role: user.role,
+        first_name: user.first_name,
+        last_name: user.last_name
+      }
+    },
+    JWT_SECRET,
+    { expiresIn: '1d' }
+  );
 
-  try {
-    const userExists = await UserModel.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ error: 'El usuario ya existe' });
-    }
-
-    const hashedPassword = createHash(password);
-    const newUser = await UserModel.create({
-      first_name,
-      last_name,
-      email,
-      age,
-      password: hashedPassword,
-    });
-
-    res.status(201).json({ status: 'success', user: newUser });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al registrar el usuario' });
-  }
-});
-
-router.post('/login', passport.authenticate('login', { session: false }), async (req, res) => {
-  const user = req.user;
-
-  const token = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-  res
-    .cookie('jwtCookie', token, {
-      httpOnly: true,
-      secure: false, // poné true si usás HTTPS
-      maxAge: 3600000
-    })
-    .status(200)
-    .json({ status: 'success', message: 'Login exitoso' });
-});
-
-router.get('/current', passportCall('jwt'), (req, res) => {
-  res.json({
-    status: 'success',
-    payload: req.user
+const setAuthCookie = (res, token) => {
+  res.cookie(COOKIE_NAME, token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 * 24
   });
+};
+
+router.post(
+  '/register',
+  passport.authenticate('register', { session: false, failureRedirect: '/register?error=1' }),
+  (req, res) => {
+    const nextUrl = req.query.next || '/';
+    const token = signUserToken(req.user);
+    setAuthCookie(res, token);
+    return res.redirect(nextUrl);
+  }
+);
+
+router.post(
+  '/login',
+  passport.authenticate('login', { session: false, failureRedirect: '/login?error=1' }),
+  (req, res) => {
+    const nextUrl = req.query.next || '/';
+    const token = signUserToken(req.user);
+    setAuthCookie(res, token);
+    return res.redirect(nextUrl);
+  }
+);
+
+router.get(
+  '/current',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    res.json({ status: 'success', payload: req.user });
+  }
+);
+
+router.post('/logout', (req, res) => {
+  res.clearCookie(COOKIE_NAME);
+  return res.redirect('/login');
 });
 
 export default router;

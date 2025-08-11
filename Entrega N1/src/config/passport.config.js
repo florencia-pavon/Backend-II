@@ -4,12 +4,45 @@ import jwt from 'passport-jwt';
 import dotenv from 'dotenv';
 dotenv.config(); 
 import UserModel from '../models/user.model.js';
-import {isValidPassword } from '../utils/bcrypt.utils.js';
+import CartModel from '../models/cart.model.js';
+import { createHash, isValidPassword } from '../utils/bcrypt.utils.js';
 import { cookieExtractor } from '../utils/jwt.utils.js';
 
 const LocalStrategy = local.Strategy;
 const JWTStrategy = jwt.Strategy;
 const ExtractJWT = jwt.ExtractJwt;
+
+passport.use('register', new LocalStrategy(
+  {
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+  },
+  async (req, email, password, done) => {
+    try {
+      const { first_name, last_name, age } = req.body;
+
+      const exists = await UserModel.findOne({ email });
+      if (exists) return done(null, false, { message: 'El email ya está registrado' });
+
+      const cart = await CartModel.create({ products: [] });
+
+      const user = await UserModel.create({
+        first_name,
+        last_name,
+        email,
+        age,
+        password: createHash(password),
+        cart: cart._id,
+        role: 'user'
+      });
+
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  }
+));
 
 passport.use('login', new LocalStrategy(
   {

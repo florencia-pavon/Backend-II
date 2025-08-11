@@ -27,7 +27,9 @@
 
     <div class="text-end mt-4">
       <h5>Total: <strong>${{calculateTotal cart.products}}</strong></h5>
-      <button class="btn btn-success mt-2">Confirmar pedido</button>
+      <form method="POST" action="/checkout/confirm" class="text-end mt-4">
+        <button type="submit" class="btn btn-success">Confirmar pedido</button>
+      </form>
     </div>
   {{else}}
     <p class="text-center text-muted">Tu carrito está vacío.</p>
