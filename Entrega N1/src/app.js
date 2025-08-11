@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import viewsRouter from './routes/views.router.js';
+import viewsRouter from './routes/views.js';
 import productsRouter from './routes/products.js';
 import cartsRouter from './routes/carts.js';
 import ProductModel from './models/product.model.js';
@@ -13,8 +13,9 @@ import Handlebars from 'handlebars';
 import passport from 'passport';
 import './config/passport.config.js';
 import cookieParser from 'cookie-parser';
-import sessionsRouter from './routes/sessions.router.js';
-import usersRouter from './routes/users.router.js';
+import sessionsRouter from './routes/sessions.js';
+import usersRouter from './routes/users.js';
+import accountsRouter from './routes/accounts.js';
 
 
 // Configuración de entorno
@@ -68,7 +69,8 @@ app.use('/', viewsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/sessions', sessionsRouter);
-app.use('/api/users', usersRouter); 
+app.use('/api/users', usersRouter);
+app.use('/', accountsRouter);
 
 // Servidor HTTP y WebSocket
 const httpServer = app.listen(PORT, () => {
