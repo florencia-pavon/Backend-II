@@ -1,0 +1,48 @@
+<h1 class="text-center mt-4">Carrito de compras</h1>
+
+<div class="container mt-4">
+  {{#if err}}
+    <div class="alert alert-warning text-center" role="alert">
+      No hay stock suficiente para incrementar ese producto.
+    </div>
+  {{/if}}
+
+  {{#if cart.products.length}}
+    <div class="row">
+      {{#each cart.products}}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <img src="/{{this.product.thumbnails.[0]}}" class="card-img-top" alt="{{this.product.title}}">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{this.product.title}}</h5>
+              <p class="card-text">{{this.product.description}}</p>
+              <p class="card-text"><strong>Precio:</strong> ${{this.product.price}}</p>
+              <p class="card-text"><strong>Cantidad:</strong> {{this.quantity}}</p>
+
+              <div class="mt-auto d-flex align-items-center gap-2">
+                <form method="POST" action="/api/carts/{{../cart._id}}/product/{{this.product._id}}/decrement" class="m-0">
+                  <button type="submit" class="btn btn-outline-secondary btn-sm">-</button>
+                </form>
+                <form method="POST" action="/api/carts/{{../cart._id}}/product/{{this.product._id}}" class="m-0">
+                  <button type="submit" class="btn btn-outline-secondary btn-sm">+</button>
+                </form>
+
+                <form method="POST" action="/api/carts/{{../cart._id}}/product/{{this.product._id}}/remove" class="m-0 ms-auto">
+                  <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+
+      <a href="/" class="btn btn-secondary mt-2">Volver a la lista</a>
+      <a href="/checkout" class="btn btn-success mt-2">Finalizar compra</a>
+    </div>
+  {{else}}
+    <div class="container text-center mt-5">
+      <p class="text-center">Tu carrito está vacío.</p>
+      <a href="/" class="btn btn-secondary mt-2">Volver a la lista</a>
+    </div>
+  {{/if}}
+</div>

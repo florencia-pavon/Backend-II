@@ -1,5 +1,5 @@
 {
-  "name": "entrega-n1",
+  "name": "entrega-final",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -14,12 +14,13 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
-    "dotenv": "^17.2.0",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "express-handlebars": "^8.0.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.4",
+    "mongoose": "^8.18.0",
     "mongoose-paginate-v2": "^1.9.1",
+    "nodemailer": "^7.0.5",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

@@ -1,0 +1,86 @@
+<section class="container py-4" style="max-width:720px">
+  {{#if ok}}<div class="alert alert-success">Datos actualizados</div>{{/if}}
+  {{#if err}}<div class="alert alert-danger">Contraseña actual incorrecta</div>{{/if}}
+
+  <h1 class="mb-3">Mi cuenta</h1>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="mb-2"><strong>Nombre:</strong> {{user.first_name}}</div>
+      <div class="mb-2"><strong>Apellido:</strong> {{user.last_name}}</div>
+      <div class="mb-2"><strong>Email:</strong> {{user.email}}</div>
+      <div class="mb-2"><strong>Edad:</strong> {{user.age}}</div>
+
+      <div class="d-flex gap-2 mt-3">
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#editForm"
+        >Editar datos</button>
+        <form
+          method="POST"
+          action="/account/delete"
+          class="m-0"
+          onsubmit="return confirm('¿Seguro que querés eliminar tu cuenta?');"
+        >
+          <button type="submit" class="btn btn-outline-danger">Eliminar cuenta</button>
+        </form>
+      </div>
+
+      <div id="editForm" class="collapse mt-4">
+        <form method="POST" action="/account/update">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input
+              name="first_name"
+              class="form-control"
+              value="{{user.first_name}}"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Apellido</label>
+            <input
+              name="last_name"
+              class="form-control"
+              value="{{user.last_name}}"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Edad</label>
+            <input
+              name="age"
+              type="number"
+              min="0"
+              class="form-control"
+              value="{{user.age}}"
+            />
+          </div>
+
+          <div class="border rounded p-3 mb-3">
+            <h6 class="mb-3">Cambiar contraseña</h6>
+            <div class="mb-3">
+              <label class="form-label">Contraseña actual</label>
+              <input
+                name="currentPassword"
+                type="password"
+                class="form-control"
+              />
+            </div>
+            <div>
+              <label class="form-label">Nueva contraseña</label>
+              <input name="newPassword" type="password" class="form-control" />
+            </div>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">Guardar cambios</button>
+            <a href="/account" class="btn btn-secondary">Cancelar</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

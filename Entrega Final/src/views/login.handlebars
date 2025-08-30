@@ -1,0 +1,39 @@
+<div class="container d-flex justify-content-center align-items-center mt-5">
+  <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+    <h2 class="text-center mb-4">Iniciar sesión</h2>
+
+    <form method="POST" action="/api/sessions/login{{#if next}}?next={{next}}{{/if}}">
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+    </form>
+
+    <div class="text-center mt-3">
+      <small><a href="/forgot-password{{#if next}}?next={{next}}{{/if}}">¿Olvidaste tu contraseña?</a></small>
+    </div>
+
+    <div class="text-center mt-2">
+      <small>¿No tenés cuenta? <a href="/register{{#if next}}?next={{next}}{{/if}}">Registrate</a></small>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="container py-5">
+  <h2 class="text-center mb-4">Resumen de tu pedido</h2>
+
+  {{#if cart.products.length}}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead class="table-light">
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each cart.products}}
+            <tr>
+              <td>{{this.product.title}}</td>
+              <td>${{this.product.price}}</td>
+              <td>{{this.quantity}}</td>
+              <td>${{multiply this.product.price this.quantity}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-end mt-4">
+      <h5>Total: <strong>${{calculateTotal cart.products}}</strong></h5>
+      <form method="POST" action="/checkout/confirm" class="text-end mt-4">
+        <button type="submit" class="btn btn-success">Confirmar pedido</button>
+      </form>
+    </div>
+  {{else}}
+    <p class="text-center text-muted">Tu carrito está vacío.</p>
+  {{/if}}
+</div>
