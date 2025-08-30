@@ -48,7 +48,7 @@ const checkout = async (req, res) => {
 };
 
 const checkoutConfirm = async (req, res) => {
-  const result = await purchaseService.checkout(req.user.cart);
+  const result = await purchaseService.checkout(req.user.cart, req.user);
   if (!result.ok) {
     const cart = await viewsService.getCartPopulatedLean(req.user.cart);
     const names = result.outOfStock.map(i => `${i.name} (${i.available}/${i.requested})`).join(", ");
@@ -56,6 +56,7 @@ const checkoutConfirm = async (req, res) => {
   }
   return res.render("orderSuccess", { title: "Compra realizada" });
 };
+
 
 const login = (req, res) => {
   return res.render("login", { title: "Iniciar sesión", next: req.query.next || "/" });

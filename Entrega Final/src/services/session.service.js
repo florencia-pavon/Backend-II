@@ -65,7 +65,7 @@ const sendResetEmail = async (email) => {
         
         <!-- Header -->
         <div style="background-color: #f19d30; text-align: center; padding: 20px;">
-          <img src="https://raw.githubusercontent.com/florencia-pavon/Backend-II/main/Entrega%20N1/src/public/multimedia/logo.png" alt="Lotta Pastelería" style="max-width: 120px; margin-bottom: 10px;" />
+          <img src="https://raw.githubusercontent.com/florencia-pavon/Backend-II/main/Entrega%20Final/src/public/multimedia/logo.png" alt="Lotta Pastelería" style="max-width: 120px; margin-bottom: 10px;" />
         </div>
 
         <!-- Body -->
